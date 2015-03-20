@@ -1,17 +1,35 @@
 package com.bernabeborrero.theblackkeys;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
-public class Inici extends ActionBarActivity {
+public class StartActivity extends ActionBarActivity {
+
+    Button btnGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inici);
+
+        setUpGUI();
+    }
+
+    private void setUpGUI() {
+        btnGo = (Button) findViewById(R.id.btnGo);
+        btnGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent optionsIntent = new Intent(getBaseContext(), OptionsActivity.class);
+                startActivity(optionsIntent);
+            }
+        });
     }
 
     @Override

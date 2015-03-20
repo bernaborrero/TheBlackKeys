@@ -10,11 +10,6 @@
         <activity
             android:name=".OptionsActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SingActivity"
@@ -25,7 +20,7 @@
                 android:value="com.bernabeborrero.theblackkeys.OptionsActivity" />
         </activity>
         <activity
-            android:name=".Inici"
+            android:name=".StartActivity"
             android:label="@string/title_activity_inici" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
