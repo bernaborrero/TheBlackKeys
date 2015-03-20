@@ -26,6 +26,12 @@ public class SingActivity extends ActionBarActivity {
         btnRecord = (Button) findViewById(R.id.btnRecord);
 
         txtLyrics.setText(getString(R.string.lyrics));
+
+        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            txtLyrics.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        }
+
+        txtLyrics.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);*/
     }
 
     @Override
