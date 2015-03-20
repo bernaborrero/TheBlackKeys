@@ -44,4 +44,6 @@
         It\'s alright\n
         Ain\'t no guard in my house
     </string>
+    <string name="title_activity_inici">Inici</string>
+    <string name="go">Go!</string>
 </resources>
