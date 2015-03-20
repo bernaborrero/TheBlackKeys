@@ -46,4 +46,7 @@
     </string>
     <string name="title_activity_inici">Inici</string>
     <string name="go">Go!</string>
+    <string name="Complete">Complete</string>
+    <string name="Error">Error</string>
+    <string name="Upload">Upload</string>
 </resources>

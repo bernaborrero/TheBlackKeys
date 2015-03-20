@@ -1,17 +1,21 @@
 package com.bernabeborrero.theblackkeys;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
+
+import com.dd.CircularProgressButton;
 
 
 public class SingActivity extends ActionBarActivity {
 
     TextView txtLyrics;
-    Button btnRecord;
+    CircularProgressButton btnRecord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +27,34 @@ public class SingActivity extends ActionBarActivity {
 
     private void setUpGUI() {
         txtLyrics = (TextView) findViewById(R.id.txtLyrics);
-        btnRecord = (Button) findViewById(R.id.btnRecord);
+        btnRecord = (CircularProgressButton) findViewById(R.id.btnRecord);
 
         txtLyrics.setText(getString(R.string.lyrics));
+
+        btnRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnRecord.getProgress() == 0) {
+                    simulateSuccessProgress(btnRecord);
+                } else {
+                    btnRecord.setProgress(0);
+                }
+            }
+        });
+    }
+
+    private void simulateSuccessProgress(final CircularProgressButton button) {
+        ValueAnimator widthAnimation = ValueAnimator.ofInt(1, 100);
+        widthAnimation.setDuration(1500);
+        widthAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        widthAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Integer value = (Integer) animation.getAnimatedValue();
+                button.setProgress(value);
+            }
+        });
+        widthAnimation.start();
     }
 
     @Override
