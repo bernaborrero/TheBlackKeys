@@ -29,6 +29,8 @@ public class SingActivity extends ActionBarActivity {
 
     TextView txtLyrics;
     CircularProgressButton btnRecord;
+    ActionMenuItemView playButton;
+    ValueAnimator widthAnimation;
 
     MediaPlayer karaokePlayer;
     MediaPlayer recordPlayer;
@@ -71,10 +73,14 @@ public class SingActivity extends ActionBarActivity {
                     startProgress(btnRecord, karaokePlayer.getDuration());
 
                     BlueTea.logStep(6, "Record_Voice");
-                } else {
+                }
+                else if (btnRecord.getProgress() == 100) {
+                    btnRecord.setProgress(100);
+                }
+                else {
                     stopPlaying();
                     stopRecording();
-                    btnRecord.setProgress(0);
+                    btnRecord.setProgress(100);
                 }
             }
         });
@@ -86,7 +92,7 @@ public class SingActivity extends ActionBarActivity {
      * @param milliseconds the length of the song in milliseconds
      */
     private void startProgress(final CircularProgressButton button, int milliseconds) {
-        ValueAnimator widthAnimation = ValueAnimator.ofInt(1, 100);
+        widthAnimation = ValueAnimator.ofInt(1, 100);
         widthAnimation.setDuration(milliseconds);
         widthAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
         widthAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -105,6 +111,14 @@ public class SingActivity extends ActionBarActivity {
     private void startPlaying() {
         karaokePlayer = MediaPlayer.create(this, R.raw.gold_on_the_ceiling);
         karaokePlayer.start();
+
+        karaokePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                widthAnimation.end();
+                btnRecord.setProgress(100);
+            }
+        });
     }
 
     /**
@@ -142,9 +156,11 @@ public class SingActivity extends ActionBarActivity {
      * Stop recording the user voice
      */
     private void stopRecording() {
-        recorder.stop();
-        recorder.release();
-        recorder = null;
+        if(recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
     }
 
     @Override
@@ -166,7 +182,7 @@ public class SingActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_play_recording) {
-            ActionMenuItemView playButton = (ActionMenuItemView) findViewById(R.id.action_play_recording);
+            playButton = (ActionMenuItemView) findViewById(R.id.action_play_recording);
 
             if(isPlayingRecordedAudio) {
                 stopRecordedAudio();
@@ -193,6 +209,16 @@ public class SingActivity extends ActionBarActivity {
             recordPlayer.setDataSource(audioFileName);
             recordPlayer.prepare();
             recordPlayer.start();
+
+            recordPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopRecordedAudio();
+                    playButton.setIcon(getResources().getDrawable(android.R.drawable.ic_media_play));
+                    isPlayingRecordedAudio = false;
+                }
+            });
+
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
