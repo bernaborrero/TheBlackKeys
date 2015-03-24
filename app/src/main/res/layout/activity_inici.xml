@@ -7,12 +7,15 @@
     android:orientation="vertical"
     tools:context="com.bernabeborrero.theblackkeys.StartActivity">
 
-    <FrameLayout
-        android:id="@+id/camera_preview"
-        android:layout_width="350dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center_horizontal">
-    </FrameLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgPerson"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:src="@drawable/person"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp" />
 
     <EditText
         android:layout_width="wrap_content"
