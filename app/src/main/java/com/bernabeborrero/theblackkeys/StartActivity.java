@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -67,8 +68,13 @@ public class StartActivity extends ActionBarActivity {
         imgPersona.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
+//                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
+                try {
+                    ferFoto(v);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -122,6 +128,8 @@ public class StartActivity extends ActionBarActivity {
             tempImageFile= crearFitxerImatge();
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
             startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
+            ImageView imgPersona = (ImageView) view.findViewById(R.id.imgPerson);
+            imgPersona.setImageBitmap(BitmapFactory.decodeFile(tempImageFile.getPath()));
         }else{
             Toast.makeText(this, "No hi hi cap medi per realitzar una fotogafia", Toast.LENGTH_LONG).show();
         }
