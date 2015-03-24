@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,6 +32,7 @@ import java.util.SimpleTimeZone;
 
 public class StartActivity extends ActionBarActivity {
     static final int CAMERA_APP_CODE = 100;
+    static final String imageFile = "the_black_keys_user";
     File tempImageFile;
     Button btnGo;
     ImageView imgPersona;
@@ -57,12 +60,20 @@ public class StartActivity extends ActionBarActivity {
     }
 
     private void setUpCamera(){
-        imgPersona = (ImageView) findViewById(R.id.imgPerson);
+        File path = new File(Environment.getExternalStorageDirectory(),this.getPackageName());
+        File image = new File(path,imageFile+".jpg");
+        if(!image.exists()){
+            imgPersona = (ImageView) findViewById(R.id.imgPerson);
+        }else{
+            imgPersona.setImageBitmap(BitmapFactory.decodeFile(image.getPath()));
+        }
+
         imgPersona.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
+//                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
+                getFrontalCamera();
             }
         });
     }
@@ -77,9 +88,21 @@ public class StartActivity extends ActionBarActivity {
        final PackageManager packageManager = context.getPackageManager();
        final Intent intent = new Intent(action);
        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-       return list.size()> 0;
+       return list.size()> 1;
     }
-
+    public void getFrontalCamera(){
+        Camera camera;
+        if(isIntentAvaliable(this, MediaStore.ACTION_IMAGE_CAPTURE)){
+            camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+            Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            tempImageFile= crearFitxerImatge();
+            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
+            startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
+        }else{
+            Toast.makeText(this, "No hi hi cap medi per realitzar una fotogafia", Toast.LENGTH_LONG).show();
+        }
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == CAMERA_APP_CODE){
@@ -97,8 +120,8 @@ public class StartActivity extends ActionBarActivity {
      *     Metode de creació del fitxer de la imatge
      */
     private File crearFitxerImatge(){
-        String timeStamp = new SimpleDateFormat("yyyMMdd").format(new Date());
-        String imageFileName = "the_black_keys_" + timeStamp + ".jpg";
+//        String timeStamp = new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
+        String imageFileName = imageFile + ".jpg";
         File path = new File(Environment.getExternalStorageDirectory(), this.getPackageName());
         if(!path.exists()){
             path.mkdir();
@@ -106,20 +129,20 @@ public class StartActivity extends ActionBarActivity {
         return new File(path, imageFileName);
     }
 
-    /**
-     *     Metode que comprova si hi ha medi per tal de realitzar la captura de la imatge
-     *     En cas afirmatiu engega el medi, en cas contrari mostra un missatge.
-     */
-    public void ferFoto(View view) throws IOException{
-        if(isIntentAvaliable(this, MediaStore.ACTION_IMAGE_CAPTURE)){
-            Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            tempImageFile= crearFitxerImatge();
-            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
-            startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
-        }else{
-            Toast.makeText(this, "No hi hi cap medi per realitzar una fotogafia", Toast.LENGTH_LONG).show();
-        }
-    }
+//    /**
+//     *     Metode que comprova si hi ha medi per tal de realitzar la captura de la imatge
+//     *     En cas afirmatiu engega el medi, en cas contrari mostra un missatge.
+//     */
+//    public void ferFoto(View view) throws IOException{
+//        if(isIntentAvaliable(this, MediaStore.ACTION_IMAGE_CAPTURE)){
+//            Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            tempImageFile= crearFitxerImatge();
+//            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
+//            startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
+//        }else{
+//            Toast.makeText(this, "No hi hi cap medi per realitzar una fotogafia", Toast.LENGTH_LONG).show();
+//        }
+//    }
 
 
     @Override
