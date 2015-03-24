@@ -46,7 +46,8 @@
             android:textSize="18sp"
             app:cpb_textComplete="@string/Great"
             app:cpb_textError="@string/Error"
-            app:cpb_textIdle="@string/Record" />
+            app:cpb_textIdle="@string/Record"
+            app:cpb_selectorIdle="@drawable/circular_button_idle_state"/>
     </LinearLayout>
 
 </LinearLayout>
