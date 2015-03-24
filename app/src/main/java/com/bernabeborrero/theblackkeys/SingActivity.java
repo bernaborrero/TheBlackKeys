@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.menu.ActionMenuItemView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,11 +25,13 @@ public class SingActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = "AudioRecording";
     private static String audioFileName;
+    private static boolean isPlayingRecordedAudio;
 
     TextView txtLyrics;
     CircularProgressButton btnRecord;
 
     MediaPlayer karaokePlayer;
+    MediaPlayer recordPlayer;
     MediaRecorder recorder;
 
     public SingActivity() {
@@ -39,6 +42,7 @@ public class SingActivity extends ActionBarActivity {
         }
 
         audioFileName = new File(path, audioFileName).getAbsolutePath();
+        isPlayingRecordedAudio = false;
     }
 
     @Override
@@ -107,9 +111,11 @@ public class SingActivity extends ActionBarActivity {
      * Stop playing the karaoke song
      */
     private void stopPlaying() {
-        karaokePlayer.stop();
-        karaokePlayer.release();
-        karaokePlayer = null;
+        if(karaokePlayer != null) {
+            karaokePlayer.stop();
+            karaokePlayer.release();
+            karaokePlayer = null;
+        }
     }
 
     /**
@@ -160,9 +166,45 @@ public class SingActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_play_recording) {
+            ActionMenuItemView playButton = (ActionMenuItemView) findViewById(R.id.action_play_recording);
+
+            if(isPlayingRecordedAudio) {
+                stopRecordedAudio();
+                playButton.setIcon(getResources().getDrawable(android.R.drawable.ic_media_play));
+                isPlayingRecordedAudio = false;
+            } else {
+                playRecordedAudio();
+                playButton.setIcon(getResources().getDrawable(android.R.drawable.ic_media_pause));
+                isPlayingRecordedAudio = true;
+            }
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Play the user recorded audio
+     */
+    private void playRecordedAudio() {
+        recordPlayer = new MediaPlayer();
+        try {
+            recordPlayer.setDataSource(audioFileName);
+            recordPlayer.prepare();
+            recordPlayer.start();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+    }
+
+    /**
+     * Stop playing the user recorded audio
+     */
+    private void stopRecordedAudio() {
+        recordPlayer.stop();
+        recordPlayer.release();
+        recordPlayer = null;
+    }
+
 }
