@@ -2,8 +2,11 @@ package com.bernabeborrero.theblackkeys;
 
 import android.animation.ValueAnimator;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,24 +16,42 @@ import android.widget.TextView;
 import com.bernabeborrero.bluetea.BlueTea;
 import com.dd.CircularProgressButton;
 
+import java.io.File;
+import java.io.IOException;
+
 
 public class SingActivity extends ActionBarActivity {
+
+    private static final String LOG_TAG = "AudioRecording";
+    private static String audioFileName;
 
     TextView txtLyrics;
     CircularProgressButton btnRecord;
 
     MediaPlayer karaokePlayer;
+    MediaRecorder recorder;
+
+    public SingActivity() {
+        audioFileName = "userRecording-goldOnTheCeiling.3gp";
+        File path = new File(Environment.getExternalStorageDirectory(), LOG_TAG);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+
+        audioFileName = new File(path, audioFileName).getAbsolutePath();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing);
 
-        karaokePlayer = MediaPlayer.create(this, R.raw.gold_on_the_ceiling);
-
         setUpGUI();
     }
 
+    /**
+     * Set up the GUI components
+     */
     private void setUpGUI() {
         txtLyrics = (TextView) findViewById(R.id.txtLyrics);
         btnRecord = (CircularProgressButton) findViewById(R.id.btnRecord);
@@ -41,18 +62,25 @@ public class SingActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (btnRecord.getProgress() == 0) {
-                    karaokePlayer.start();
+                    startPlaying();
+                    startRecording();
                     startProgress(btnRecord, karaokePlayer.getDuration());
 
                     BlueTea.logStep(6, "Record_Voice");
                 } else {
-                    karaokePlayer.stop();
+                    stopPlaying();
+                    stopRecording();
                     btnRecord.setProgress(0);
                 }
             }
         });
     }
 
+    /**
+     * Start the progress of the recording button
+     * @param button the button
+     * @param milliseconds the length of the song in milliseconds
+     */
     private void startProgress(final CircularProgressButton button, int milliseconds) {
         ValueAnimator widthAnimation = ValueAnimator.ofInt(1, 100);
         widthAnimation.setDuration(milliseconds);
@@ -67,14 +95,57 @@ public class SingActivity extends ActionBarActivity {
         widthAnimation.start();
     }
 
+    /**
+     * Start playing the karaoke song
+     */
+    private void startPlaying() {
+        karaokePlayer = MediaPlayer.create(this, R.raw.gold_on_the_ceiling);
+        karaokePlayer.start();
+    }
+
+    /**
+     * Stop playing the karaoke song
+     */
+    private void stopPlaying() {
+        karaokePlayer.stop();
+        karaokePlayer.release();
+        karaokePlayer = null;
+    }
+
+    /**
+     * Start recording the user voice
+     */
+    private void startRecording() {
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setOutputFile(audioFileName);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+            btnRecord.setEnabled(false);
+        }
+
+        recorder.start();
+    }
+
+    /**
+     * Stop recording the user voice
+     */
+    private void stopRecording() {
+        recorder.stop();
+        recorder.release();
+        recorder = null;
+    }
+
     @Override
     public void onStop() {
         super.onStop();
-        if(karaokePlayer.isPlaying()) {
-            karaokePlayer.stop();
-        }
-
-        karaokePlayer.release();
+        stopPlaying();
+        stopRecording();
     }
 
     @Override
@@ -86,13 +157,9 @@ public class SingActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_play_recording) {
             return true;
         }
 
