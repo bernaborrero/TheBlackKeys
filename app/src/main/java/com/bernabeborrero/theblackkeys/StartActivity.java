@@ -127,11 +127,7 @@ public class StartActivity extends ActionBarActivity {
      *     En cas afirmatiu engega el medi, en cas contrari mostra un missatge.
      */
     public void ferFoto(View view) throws IOException{
-        Camera camera;
         if(isIntentAvaliable(this, MediaStore.ACTION_IMAGE_CAPTURE)){
-            //if you want to open front facing camera use this line
-            camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
-
             Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             tempImageFile= crearFitxerImatge();
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
