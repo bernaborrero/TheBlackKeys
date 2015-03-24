@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.bernabeborrero.bluetea.BlueTea;
+
 
 public class OptionsActivity extends ActionBarActivity {
 
@@ -30,24 +32,31 @@ public class OptionsActivity extends ActionBarActivity {
         btnVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                BlueTea.logStep(5, "Open_Video");
             }
         });
 
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                BlueTea.logStep(4, "Open_History");
             }
         });
 
         btnSing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BlueTea.logStep(3, "Open_Sing");
                 Intent startSing = new Intent(getBaseContext(), SingActivity.class);
                 startActivity(startSing);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BlueTea.logStep(2, "Open_Menu");
     }
 
     @Override

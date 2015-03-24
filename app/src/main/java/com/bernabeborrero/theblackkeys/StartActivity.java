@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.bernabeborrero.bluetea.BlueTea;
+
 
 public class StartActivity extends ActionBarActivity {
 
@@ -17,6 +19,8 @@ public class StartActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inici);
+
+        BlueTea.startSession("theblackkeys");
 
         setUpGUI();
     }
@@ -30,6 +34,12 @@ public class StartActivity extends ActionBarActivity {
                 startActivity(optionsIntent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BlueTea.logStep(1, "Start_App");
     }
 
     @Override

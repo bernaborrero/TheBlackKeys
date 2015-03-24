@@ -44,15 +44,9 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:cpb_textComplete="@string/Complete"
+            app:cpb_textComplete="@string/Great"
             app:cpb_textError="@string/Error"
-            app:cpb_textIdle="@string/Upload" />
-
-        <!-- <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Record"
-            android:id="@+id/btnRecord" /> -->
+            app:cpb_textIdle="@string/Record" />
     </LinearLayout>
 
 </LinearLayout>

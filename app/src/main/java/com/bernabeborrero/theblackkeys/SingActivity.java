@@ -1,6 +1,7 @@
 package com.bernabeborrero.theblackkeys;
 
 import android.animation.ValueAnimator;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 
+import com.bernabeborrero.bluetea.BlueTea;
 import com.dd.CircularProgressButton;
 
 
@@ -17,10 +19,14 @@ public class SingActivity extends ActionBarActivity {
     TextView txtLyrics;
     CircularProgressButton btnRecord;
 
+    MediaPlayer karaokePlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing);
+
+        karaokePlayer = MediaPlayer.create(this, R.raw.gold_on_the_ceiling);
 
         setUpGUI();
     }
@@ -35,17 +41,21 @@ public class SingActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (btnRecord.getProgress() == 0) {
-                    simulateSuccessProgress(btnRecord);
+                    karaokePlayer.start();
+                    startProgress(btnRecord, karaokePlayer.getDuration());
+
+                    BlueTea.logStep(6, "Record_Voice");
                 } else {
+                    karaokePlayer.stop();
                     btnRecord.setProgress(0);
                 }
             }
         });
     }
 
-    private void simulateSuccessProgress(final CircularProgressButton button) {
+    private void startProgress(final CircularProgressButton button, int milliseconds) {
         ValueAnimator widthAnimation = ValueAnimator.ofInt(1, 100);
-        widthAnimation.setDuration(1500);
+        widthAnimation.setDuration(milliseconds);
         widthAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
         widthAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -55,6 +65,16 @@ public class SingActivity extends ActionBarActivity {
             }
         });
         widthAnimation.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(karaokePlayer.isPlaying()) {
+            karaokePlayer.stop();
+        }
+
+        karaokePlayer.release();
     }
 
     @Override
