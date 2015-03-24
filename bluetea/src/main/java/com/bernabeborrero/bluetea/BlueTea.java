@@ -20,7 +20,7 @@ import java.util.List;
  */
 public abstract class BlueTea {
 
-    private static final String API_URL = "http://172.24.7.222/bluetea.php";
+    private static final String API_URL = "http://bluetea.tk/bluetea-api.php";
 
     private static HashMap<Integer, Integer> codes;
     private static int previousStepCode;

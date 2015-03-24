@@ -20,7 +20,7 @@ public class StartActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inici);
 
-        BlueTea.startSession("theblackkeys");
+        BlueTea.startSession("theblackkeys");   // http://bluetea.tk/bluetea.php?appName=theblackkeys
 
         setUpGUI();
     }
