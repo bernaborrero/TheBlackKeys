@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public class StartActivity extends ActionBarActivity {
     static final int CAMERA_APP_CODE = 100;
+    static final String imageFile = "the_black_keys_user";
     File tempImageFile;
     Button btnGo;
     ImageView imgPersona;
@@ -64,6 +66,8 @@ public class StartActivity extends ActionBarActivity {
     }
 
     private void setUpCamera(){
+        File path = new File(Environment.getExternalStorageDirectory(), this.getPackageName());
+        File image = new File(path, imageFile + ".jpg");
         imgPersona = (ImageView) findViewById(R.id.imgPerson);
         imgPersona.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -109,8 +113,8 @@ public class StartActivity extends ActionBarActivity {
      *     Metode de creació del fitxer de la imatge
      */
     private File crearFitxerImatge(){
-        String timeStamp = new SimpleDateFormat("yyyMMdd").format(new Date());
-        String imageFileName = "the_black_keys_" + timeStamp + ".jpg";
+//        String timeStamp = new SimpleDateFormat("yyyMMdd").format(new Date());
+        String imageFileName = imageFile + ".jpg";
         File path = new File(Environment.getExternalStorageDirectory(), this.getPackageName());
         if(!path.exists()){
             path.mkdir();
@@ -123,7 +127,11 @@ public class StartActivity extends ActionBarActivity {
      *     En cas afirmatiu engega el medi, en cas contrari mostra un missatge.
      */
     public void ferFoto(View view) throws IOException{
+        Camera camera;
         if(isIntentAvaliable(this, MediaStore.ACTION_IMAGE_CAPTURE)){
+            //if you want to open front facing camera use this line
+            camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+
             Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             tempImageFile= crearFitxerImatge();
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));

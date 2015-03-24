@@ -8,8 +8,8 @@
     tools:context="com.bernabeborrero.theblackkeys.StartActivity">
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/scrollView" >
 
         <LinearLayout
@@ -33,7 +33,8 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/txtNom"
-                android:hint="Nom" />
+                android:hint="Nom"
+                android:layout_gravity="center_horizontal" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -41,21 +42,21 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/txtCognom"
-                android:hint="Cognom" />
+                android:hint="Cognom"
+                android:layout_gravity="center_horizontal" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/go"
+                android:id="@+id/btnGo"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="140dp" />
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/go"
-                    android:id="@+id/btnGo"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
