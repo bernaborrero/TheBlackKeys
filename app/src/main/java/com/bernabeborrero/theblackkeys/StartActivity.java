@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
@@ -132,13 +133,37 @@ public class StartActivity extends ActionBarActivity {
             tempImageFile= crearFitxerImatge();
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
             startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
-            ImageView imgPersona = (ImageView) view.findViewById(R.id.imgPerson);
-            imgPersona.setImageBitmap(BitmapFactory.decodeFile(tempImageFile.getPath()));
+            ImageView imgPers = (ImageView) view.findViewById(R.id.imgPerson);
+//            imgPersona.setImageBitmap(BitmapFactory.decodeFile(tempImageFile.getPath()));
+            setPic(imgPers,tempImageFile.getPath());
         }else{
             Toast.makeText(this, "No hi hi cap medi per realitzar una fotogafia", Toast.LENGTH_LONG).show();
         }
     }
 
+    private void setPic(ImageView imgPers, String photoPath) {
+        // Get the dimensions of the View
+        int targetW = imgPers.getWidth();
+        int targetH = imgPers.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
+        imgPers.setImageBitmap(bitmap);
+    }
 
     @Override
     public void onResume() {
