@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -36,6 +37,7 @@ public class StartActivity extends ActionBarActivity {
     File tempImageFile;
     Button btnGo;
     ImageView imgPersona;
+    int img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,34 @@ public class StartActivity extends ActionBarActivity {
         });
     }
 
+    public static int calcularInSampleSize(BitmapFactory.Options options,
+                                        int reqWidth, int reqHeight) {
+        // alçadai ampladade la imatge
+        int height= options.outHeight;
+        int width= options.outWidth;
+        int inSampleSize= 1;
+        int heightRatio, widthRatio;
+        if(height > reqHeight|| width > reqWidth) {
+            heightRatio= Math.round((float) height / (float) reqHeight);
+            widthRatio= Math.round((float) width / (float) reqWidth);
+            inSampleSize= heightRatio< widthRatio? heightRatio: widthRatio;
+        }
+        return inSampleSize;
+    }
+
+    public static Bitmap obtenirImatgeFromResource(Resources res, int resId,
+                                                int reqWidth, int reqHeight) {
+    // Primer, descodificar el bitmapambinJustDecodeBounds=true
+    // per comprovarles dimensions
+        BitmapFactory.Options options= new BitmapFactory.Options();
+        options.inJustDecodeBounds= true;
+        BitmapFactory.decodeResource(res, resId, options);
+    // Calcular inSampleSize
+        options.inSampleSize= calcularInSampleSize(options, reqWidth, reqHeight);
+    // Descodificar el bitmapambel valor indicatde inSampleSize
+        options.inJustDecodeBounds= false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
     /**
      * Metode que comprova si hi ha algun medi per tal de realitzar la captura de la imatge
      * @param context
@@ -97,12 +127,15 @@ public class StartActivity extends ActionBarActivity {
        return list.size()> 0;
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == CAMERA_APP_CODE){
             if(resultCode == RESULT_OK){
                 try {
-                    imgPersona.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(tempImageFile)));
+//                imgPersona.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(tempImageFile)));
+//                imgPersona.setImageBitmap(obtenirImatgeFromResource(getResources(),Uri.fromFile(tempImageFile),100,100));
+                    imgPersona.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.fromFile(tempImageFile)),100,100,true));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -133,36 +166,11 @@ public class StartActivity extends ActionBarActivity {
             tempImageFile= crearFitxerImatge();
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
             startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
-            ImageView imgPers = (ImageView) view.findViewById(R.id.imgPerson);
+//            ImageView imgPers = (ImageView) view.findViewById(R.id.imgPerson);
 //            imgPersona.setImageBitmap(BitmapFactory.decodeFile(tempImageFile.getPath()));
-            setPic(imgPers,tempImageFile.getPath());
         }else{
             Toast.makeText(this, "No hi hi cap medi per realitzar una fotogafia", Toast.LENGTH_LONG).show();
         }
-    }
-
-    private void setPic(ImageView imgPers, String photoPath) {
-        // Get the dimensions of the View
-        int targetW = imgPers.getWidth();
-        int targetH = imgPers.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(photoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
-        imgPers.setImageBitmap(bitmap);
     }
 
     @Override
