@@ -1,23 +1,18 @@
 package com.bernabeborrero.theblackkeys;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.hardware.Camera;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,30 +21,20 @@ import com.bernabeborrero.bluetea.BlueTea;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
-public class StartActivity extends ActionBarActivity {
+public class StartActivity extends Activity {
     static final int CAMERA_APP_CODE = 100;
     static final String imageFile = "the_black_keys_user";
     File tempImageFile;
     Button btnGo;
     ImageView imgPersona;
-    int img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inici);
-
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            getSupportActionBar().hide();
-        }
 
         BlueTea.startSession("theblackkeys");   // http://bluetea.tk/bluetea.php?appName=theblackkeys
 
@@ -75,8 +60,6 @@ public class StartActivity extends ActionBarActivity {
         imgPersona.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-//                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
                 try {
                     ferFoto(v);
                 } catch (IOException e) {
@@ -85,6 +68,7 @@ public class StartActivity extends ActionBarActivity {
             }
         });
     }
+
     /**
      * Metode que comprova si hi ha algun medi per tal de realitzar la captura de la imatge
      * @param context
@@ -104,8 +88,6 @@ public class StartActivity extends ActionBarActivity {
         if(requestCode == CAMERA_APP_CODE){
             if(resultCode == RESULT_OK){
                 try {
-//                imgPersona.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(tempImageFile)));
-//                imgPersona.setImageBitmap(obtenirImatgeFromResource(getResources(),Uri.fromFile(tempImageFile),100,100));
                     imgPersona.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.fromFile(tempImageFile)),300,300,true));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -137,8 +119,6 @@ public class StartActivity extends ActionBarActivity {
             tempImageFile= crearFitxerImatge();
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImageFile));
             startActivityForResult(takePhotoIntent, CAMERA_APP_CODE);
-//            ImageView imgPers = (ImageView) view.findViewById(R.id.imgPerson);
-//            imgPersona.setImageBitmap(BitmapFactory.decodeFile(tempImageFile.getPath()));
         }else{
             Toast.makeText(this, "No hi hi cap medi per realitzar una fotogafia", Toast.LENGTH_LONG).show();
         }
