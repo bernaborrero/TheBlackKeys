@@ -1,39 +1,34 @@
 package com.bernabeborrero.theblackkeys;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 
-public class VideoActivity extends ActionBarActivity {
+public class VideoActivity extends Activity {
+
+    static final String VIDEO_PATH = "https://dl.dropboxusercontent.com/s/mf7uz7njwjj82ne/gold_on_the_ceiling.mp4?dl=0";
+
+    private VideoView videoClip;
+
+    private MediaController mediaController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+
+        setUpGUI();
+
+        mediaController = new MediaController(this);
+        videoClip.setMediaController(mediaController);
+        videoClip.setVideoPath(VIDEO_PATH);
+        videoClip.start();
+        videoClip.requestFocus();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_video, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    private void setUpGUI() {
+        videoClip = (VideoView) findViewById(R.id.videoclip);
     }
 }

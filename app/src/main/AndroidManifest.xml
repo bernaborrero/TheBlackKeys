@@ -36,7 +36,8 @@
         <activity
             android:name=".VideoActivity"
             android:label="@string/title_activity_video"
-            android:parentActivityName=".OptionsActivity" >
+            android:parentActivityName=".OptionsActivity"
+            android:screenOrientation="sensorLandscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bernabeborrero.theblackkeys.OptionsActivity" />
