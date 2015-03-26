@@ -3,40 +3,44 @@
     package="com.bernabeborrero.theblackkeys" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name=".StartActivity"
-            android:label="@string/title_activity_inici"
-            android:noHistory="true">
+            android:label="@string/title_activity_inici">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".OptionsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
         </activity>
-
         <activity
             android:name=".SingActivity"
             android:label="@string/title_activity_sing"
-            android:parentActivityName=".OptionsActivity">
+            android:parentActivityName=".OptionsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bernabeborrero.theblackkeys.OptionsActivity" />
         </activity>
-
+        <activity
+            android:name=".VideoActivity"
+            android:label="@string/title_activity_video"
+            android:parentActivityName=".OptionsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bernabeborrero.theblackkeys.OptionsActivity" />
+        </activity>
     </application>
 
 </manifest>
