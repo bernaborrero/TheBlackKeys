@@ -56,7 +56,7 @@ public class StartActivity extends Activity {
     private void setUpCamera(){
         File path = new File(Environment.getExternalStorageDirectory(), this.getPackageName());
         File image = new File(path, imageFile + ".jpg");
-        imgPersona = (ImageView) findViewById(R.id.imgPerson);
+            imgPersona = (ImageView) findViewById(R.id.imgPerson);
         imgPersona.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
