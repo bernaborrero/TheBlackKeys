@@ -85,35 +85,6 @@ public class StartActivity extends ActionBarActivity {
             }
         });
     }
-
-    public static int calcularInSampleSize(BitmapFactory.Options options,
-                                        int reqWidth, int reqHeight) {
-        // alçadai ampladade la imatge
-        int height= options.outHeight;
-        int width= options.outWidth;
-        int inSampleSize= 1;
-        int heightRatio, widthRatio;
-        if(height > reqHeight|| width > reqWidth) {
-            heightRatio= Math.round((float) height / (float) reqHeight);
-            widthRatio= Math.round((float) width / (float) reqWidth);
-            inSampleSize= heightRatio< widthRatio? heightRatio: widthRatio;
-        }
-        return inSampleSize;
-    }
-
-    public static Bitmap obtenirImatgeFromResource(Resources res, int resId,
-                                                int reqWidth, int reqHeight) {
-    // Primer, descodificar el bitmapambinJustDecodeBounds=true
-    // per comprovarles dimensions
-        BitmapFactory.Options options= new BitmapFactory.Options();
-        options.inJustDecodeBounds= true;
-        BitmapFactory.decodeResource(res, resId, options);
-    // Calcular inSampleSize
-        options.inSampleSize= calcularInSampleSize(options, reqWidth, reqHeight);
-    // Descodificar el bitmapambel valor indicatde inSampleSize
-        options.inJustDecodeBounds= false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
     /**
      * Metode que comprova si hi ha algun medi per tal de realitzar la captura de la imatge
      * @param context
@@ -135,7 +106,7 @@ public class StartActivity extends ActionBarActivity {
                 try {
 //                imgPersona.setImageBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(tempImageFile)));
 //                imgPersona.setImageBitmap(obtenirImatgeFromResource(getResources(),Uri.fromFile(tempImageFile),100,100));
-                    imgPersona.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.fromFile(tempImageFile)),100,100,true));
+                    imgPersona.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.fromFile(tempImageFile)),300,300,true));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
