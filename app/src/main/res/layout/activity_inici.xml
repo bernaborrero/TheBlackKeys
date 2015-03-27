@@ -12,7 +12,7 @@
         android:focusableInTouchMode="false"
         android:src="@drawable/person"
         android:layout_weight="1"
-        android:background="@color/gray-dark-start" />
+        android:background="@color/gray_dark_start" />
 
     <LinearLayout
         android:orientation="vertical"
