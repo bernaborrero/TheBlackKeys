@@ -11,8 +11,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:src="@drawable/person"
-        android:layout_weight="1"
-        android:background="@color/gray-dark-start" />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -52,7 +51,7 @@
             android:layout_weight="1"
             android:layout_gravity="right"
             android:layout_marginTop="10dp"
-            style="@style/ThemeOverlay.AppCompat.ActionBar" />
+            style="@style/AppTheme" />
     </LinearLayout>
 
 </LinearLayout>
