@@ -60,5 +60,21 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="hello_world">Hello world!</string>
-
+    <string name="title_activity_history">History</string>
+    <string name="textHistory">
+    The Black Keys són un duo de blues-rock estatunidenc
+    format per Dan Auerbach i Patrick Carney a la ciutat d\' Akron (Ohio).
+    Respecte al nom de la banda hi ha dues teories sobre aquest: La primera diu
+    que un artista amic del grup que patia d\' esquizofrènia feia servir el terme black keys
+    per descriure a "les persones que no estaven del tot bé".
+    Una altra teoria sobre el nom és que les tecles negres (black keys) d\' un piano comprenen
+    una escala pentatònica menor, començant en mi bemoll major, escala que s\' associa freqüentment al blues i al rock. \n\n
+    Una de les principals característiques de la banda és la seva predilecció per l\' ús de tècniques
+    de gravació de baixa fidelitat, com lús de gravadores de cinta i efectes analògics.
+    Ells mateixos duen a terme la majoria de gravacions, la producció i la mescla dels seus treballs.
+    Una gran part de l\' àlbum Thickfreakness va ser gravat en només 14 hores al soterrani de Carny
+    amb una gravadora de vuit pistes Tascam 388 dels anys vuitanta.
+    Algunes vegades experimenten amb tècniques de producció i gravació poc habituals
+    com per exemple deixar sorolls de fons.
+    </string>
 </resources>

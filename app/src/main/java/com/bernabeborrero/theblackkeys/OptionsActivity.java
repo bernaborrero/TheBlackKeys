@@ -42,6 +42,8 @@ public class OptionsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 BlueTea.logStep(4, "Open_History");
+                Intent startHistory = new Intent (getBaseContext(), HistoryActivity.class);
+                startActivity(startHistory);
             }
         });
 

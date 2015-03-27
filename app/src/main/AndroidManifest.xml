@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".StartActivity"
-            android:label="@string/title_activity_inici">
+            android:label="@string/title_activity_inici" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,10 +37,14 @@
             android:name=".VideoActivity"
             android:label="@string/title_activity_video"
             android:parentActivityName=".OptionsActivity"
-            android:screenOrientation="sensorLandscape">
+            android:screenOrientation="sensorLandscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bernabeborrero.theblackkeys.OptionsActivity" />
+        </activity>
+        <activity
+            android:name=".HistoryActivity"
+            android:label="@string/title_activity_history" >
         </activity>
     </application>
 
