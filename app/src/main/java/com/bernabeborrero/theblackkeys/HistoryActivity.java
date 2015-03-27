@@ -1,12 +1,13 @@
 package com.bernabeborrero.theblackkeys;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class HistoryActivity extends ActionBarActivity {
+public class HistoryActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

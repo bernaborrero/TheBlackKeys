@@ -88,7 +88,7 @@ public class StartActivity extends Activity {
         if(requestCode == CAMERA_APP_CODE){
             if(resultCode == RESULT_OK){
                 try {
-                    imgPersona.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.fromFile(tempImageFile)),300,300,true));
+                    imgPersona.setImageBitmap(Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(getContentResolver(),Uri.fromFile(tempImageFile)), imgPersona.getWidth(), imgPersona.getHeight(),true));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
