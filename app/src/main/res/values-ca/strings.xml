@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">TheBlackKeys</string>
+
+    <string name="title_activity_inici">The Black Keys</string>
+    <string name="title_activity_sing">Prova\'t!</string>
+    <string name="title_activity_history">Història</string>
+    <string name="title_activity_video">Videoclip</string>
+
+    <string name="action_settings">Propietats</string>
+
+    <!-- Login -->
+    <string name="go">Entra</string>
+
+    <!-- Record -->
+    <string name="Great">Genial!</string>
+    <string name="Error">Error</string>
+    <string name="Record">Gravar</string>
+    <string name="action_play">Reproduïr</string>
+
+</resources>
